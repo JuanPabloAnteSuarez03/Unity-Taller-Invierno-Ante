@@ -67,5 +67,8 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
+# Capturas de trabajo (solo se versiona la vista previa final en docs/)
+/[Aa]ssets/[Ss]creenshots/
+
 # MCP for Unity local state
 /.mcp/
