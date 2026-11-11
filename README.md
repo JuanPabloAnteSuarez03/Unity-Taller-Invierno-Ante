@@ -5,6 +5,8 @@ Taller Práctico de Unity — *Módulo: Composición de Escenas y Control de Tra
 Una patrulla de policía queda atrapada y semienterrada por una tormenta de nieve: el motor
 sigue encendido (humo en el escape), las sirenas giran y la ventisca arrecia sobre el entorno.
 
+![Vista previa de la escena](docs/preview.png)
+
 ## Requisitos
 
 - Unity **6000.6.6f1** (Unity 6) con el pipeline **URP**
@@ -37,6 +39,16 @@ sigue encendido (humo en el escape), las sirenas giran y la ventisca arrecia sob
 1. Abrir el proyecto con Unity Hub (versión 6000.6.6f1).
 2. Abrir `Assets/Scenes/SampleScene.unity`.
 3. Pulsar **Play**.
+
+## Estado
+
+- [x] Jerarquía de 10 objetos
+- [x] Iluminación (luna azulada + sirenas roja/azul rotando)
+- [x] `SirenRotation.cs` funcionando en `Siren_Pivot`
+- [x] Partículas: nieve (`Global_Blizzard`) y humo (`Exhaust_Smoke`)
+- [x] Niebla y ambiente nocturno de ventisca
+- [ ] Modelo 3D definitivo del coche (ahora `Car_Mesh` es una primitiva de bloqueo,
+      lista para sustituirse conservando la jerarquía)
 
 ## Autor
 
