@@ -20,7 +20,7 @@ sigue encendido (humo en el escape), las sirenas giran y la ventisca arrecia sob
 |---|--------|----------------------|---------|
 | 1 | `Main Camera` | Camera | Encuadre lateral/diagonal del coche |
 | 2 | `Moon_Light` | Directional Light | Luz general, azul pálido, intensidad baja |
-| 3 | `Snow_Terrain` | Plane | Suelo nevado |
+| 3 | `Snow_Terrain` | Mesh generado | Suelo nevado con ventisqueros (morro más hundido) |
 | 4 | `Police_Car` | Empty (Y = -0.5) | Objeto padre, semienterrado |
 | 5 | `↳ Car_Mesh` | Mesh | Carrocería visible |
 | 6 | `↳ Siren_Pivot` | Empty | Pivote de las sirenas (script) |
@@ -52,6 +52,9 @@ sigue encendido (humo en el escape), las sirenas giran y la ventisca arrecia sob
 - [x] Nieve acumulada sobre el coche (`Car_Mesh/Snow_Cap`): malla generada con espesor
       **uniforme** sobre todas las superficies horizontales
 - [x] Nevada ligera y uniforme en toda la escena (partículas lentas, ~100 × 100 m)
+- [x] Terreno con relieve (`Assets/Models/SnowTerrainDrifts.asset`): pendiente bajo el
+      coche (morro más hundido que la cola) y ventisqueros suaves alrededor, para que
+      el enterramiento no sea uniforme
 
 ## Ajustar la nieve del coche
 
