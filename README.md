@@ -47,9 +47,14 @@ sigue encendido (humo en el escape), las sirenas giran y la ventisca arrecia sob
 - [x] `SirenRotation.cs` funcionando en `Siren_Pivot`
 - [x] Partículas: nieve (`Global_Blizzard`) y humo (`Exhaust_Smoke`)
 - [x] Niebla y ambiente nocturno de ventisca
-- [ ] Modelo 3D definitivo del coche (ahora `Car_Mesh` es una primitiva de bloqueo,
-      lista para sustituirse conservando la jerarquía)
+- [x] Modelo 3D del coche: patrulla low-poly de Kenney (CC0) con material propio
+      (`Assets/Models/PoliceCar_Mat.mat`)
 
 ## Autor
 
 Juan Pablo Ante — Taller de Laboratorio, Desarrollo de Videojuegos.
+
+## Créditos
+
+- Modelo del coche patrulla: [Kenney Car Kit](https://kenney.nl/assets/car-kit) — licencia **CC0 1.0**
+  (dominio público). Ver `Assets/Models/Kenney-License.txt`.
