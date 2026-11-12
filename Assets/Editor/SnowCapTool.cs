@@ -17,9 +17,9 @@ public class SnowCapTool : EditorWindow
     private const string AssetPath = "Assets/Models/CarSnow.asset";
     private const string SnowMaterialPath = "Assets/Materials/Snow.mat";
 
-    // Valores por defecto = los aplicados originalmente.
+    // Valores por defecto = los aplicados actualmente: nieve uniforme.
     private float baseThickness = 0.010f;
-    private float frontExtra = 0.050f;
+    private float frontExtra = 0.0f;
     private float minNormalY = 0.45f;
     private float frontStart = 0.30f;
 
