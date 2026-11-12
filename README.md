@@ -70,6 +70,21 @@ Para cambiarla: **Tools → Nieve del coche** y mueve los valores:
 
 Pulsa **Regenerar nieve** para reconstruir la malla (también hay un botón para quitarla).
 
+## Ajustar el humo del escape
+
+**Tools → Humo del escape**. La ventana lee los valores actuales y los aplica en vivo:
+
+| Parámetro | Qué hace |
+|---|---|
+| Posición | Punto de emisión local respecto a `Police_Car` (botones *Frente* / *Parte trasera*) |
+| Partículas por segundo | Densidad del humo |
+| Color inicial | Tinte base (el degradado va en Color over Lifetime) |
+| Vida / Tamaño | Rangos mínimo y máximo |
+| Velocidad / Gravedad | Con gravedad negativa el humo sube |
+| Ángulo / Radio | Apertura del cono |
+
+Incluye presets **ligero** y **denso**, y un botón para recargar los valores de la escena.
+
 ## Autor
 
 Juan Pablo Ante — Taller de Laboratorio, Desarrollo de Videojuegos.
