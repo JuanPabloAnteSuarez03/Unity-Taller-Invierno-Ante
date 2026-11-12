@@ -6,6 +6,9 @@ using UnityEngine;
 /// Herramienta de editor para regenerar la capa de nieve del coche (Car_Mesh/Snow_Cap).
 /// Toma la malla del cuerpo, se queda con las caras que miran hacia arriba y las
 /// desplaza hacia fuera segun su normal, con mas espesor en el capo y el frontal.
+///
+/// Nota: la malla se actualiza EN SITIO (mesh.Clear + SetVertices) para no romper
+/// la referencia que tiene el MeshFilter de la escena.
 /// </summary>
 public class SnowCapTool : EditorWindow
 {
@@ -14,11 +17,13 @@ public class SnowCapTool : EditorWindow
     private const string AssetPath = "Assets/Models/CarSnow.asset";
     private const string SnowMaterialPath = "Assets/Materials/Snow.mat";
 
-    // Valores por defecto = los que estan aplicados ahora mismo.
+    // Valores por defecto = los aplicados originalmente.
     private float baseThickness = 0.010f;
     private float frontExtra = 0.050f;
     private float minNormalY = 0.45f;
     private float frontStart = 0.30f;
+
+    private string status = "";
 
     [MenuItem("Tools/Nieve del coche")]
     public static void Open()
@@ -26,41 +31,54 @@ public class SnowCapTool : EditorWindow
         GetWindow<SnowCapTool>("Nieve del coche");
     }
 
+    private void OnEnable()
+    {
+        status = "";
+    }
+
     private void OnGUI()
     {
         EditorGUILayout.LabelField("Capa de nieve sobre Car_Mesh", EditorStyles.boldLabel);
         EditorGUILayout.HelpBox(
-            "Los valores estan en unidades del modelo (1.0 = 1 metro del modelo, ~1.15 m en la escena).\n" +
-            "Pulsa 'Regenerar' para reconstruir la malla y ver el resultado.",
+            "Valores en unidades del modelo (1.0 = 1 m del modelo, ~1.15 m en la escena).\n" +
+            "Mueve los sliders y pulsa 'Regenerar nieve'. Despues guarda con Ctrl+S.",
             MessageType.Info);
 
-        baseThickness = EditorGUILayout.Slider("Espesor base", baseThickness, 0f, 0.08f);
-        frontExtra = EditorGUILayout.Slider("Extra en el capo / frontal", frontExtra, 0f, 0.15f);
+        baseThickness = EditorGUILayout.Slider("Espesor base", baseThickness, 0f, 0.03f);
+        frontExtra = EditorGUILayout.Slider("Extra en el capo / frontal", frontExtra, 0f, 0.08f);
         minNormalY = EditorGUILayout.Slider("Solo caras con inclinacion >", minNormalY, 0.10f, 0.90f);
         frontStart = EditorGUILayout.Slider("Donde empieza el frontal", frontStart, 0f, 0.90f);
 
         EditorGUILayout.Space();
         if (GUILayout.Button("Regenerar nieve", GUILayout.Height(30)))
         {
-            string msg = Regenerate(baseThickness, frontExtra, minNormalY, frontStart);
-            EditorUtility.DisplayDialog("Nieve del coche", msg, "OK");
+            status = Regenerate(baseThickness, frontExtra, minNormalY, frontStart);
+            Repaint();
         }
 
         if (GUILayout.Button("Quitar la nieve del coche"))
         {
-            Transform cap = FindCap();
-            if (cap != null) Object.DestroyImmediate(cap.gameObject);
-            AssetDatabase.DeleteAsset(AssetPath);
-            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
-                UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene());
+            bool ok = Remove();
+            status = ok ? "Nieve eliminada." : "No habia nieve que quitar.";
+            Repaint();
         }
+
+        EditorGUILayout.Space();
+        if (!string.IsNullOrEmpty(status))
+            EditorGUILayout.HelpBox(status, MessageType.None);
     }
 
-    private static Transform FindCap()
+    public static bool Remove()
     {
         GameObject car = GameObject.Find(CarMeshPath);
-        if (car == null) return null;
-        return car.transform.Find("Snow_Cap");
+        if (car == null) return false;
+
+        Transform cap = car.transform.Find("Snow_Cap");
+        if (cap == null) return false;
+
+        Object.DestroyImmediate(cap.gameObject);
+        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(car.scene);
+        return true;
     }
 
     /// <summary>Reconstruye la capa de nieve y devuelve un mensaje de resultado.</summary>
@@ -114,7 +132,7 @@ public class SnowCapTool : EditorWindow
         }
 
         if (keptTris == 0)
-            return "Ninguna cara supera la inclinacion indicada. Baja 'Solo caras con inclinacion >'.";
+            return "Ninguna cara supera la inclinacion indicada. Baja el valor de inclinacion.";
 
         List<Vector3> verts = new List<Vector3>();
         List<Vector3> norms = new List<Vector3>();
@@ -135,8 +153,17 @@ public class SnowCapTool : EditorWindow
             tris.Add(map[old]);
         }
 
-        Mesh snow = new Mesh();
-        snow.name = "CarSnow";
+        // Actualizar la malla existente si ya esta creada (evita romper referencias).
+        Mesh snow = AssetDatabase.LoadAssetAtPath<Mesh>(AssetPath);
+        bool created = false;
+        if (snow == null)
+        {
+            snow = new Mesh();
+            snow.name = "CarSnow";
+            created = true;
+        }
+
+        snow.Clear();
         snow.indexFormat = src.indexFormat;
         snow.SetVertices(verts);
         snow.SetNormals(norms);
@@ -144,8 +171,8 @@ public class SnowCapTool : EditorWindow
         snow.SetTriangles(tris, 0);
         snow.RecalculateBounds();
 
-        AssetDatabase.DeleteAsset(AssetPath);
-        AssetDatabase.CreateAsset(snow, AssetPath);
+        if (created) AssetDatabase.CreateAsset(snow, AssetPath);
+        else EditorUtility.SetDirty(snow);
         AssetDatabase.SaveAssets();
 
         Transform cap = car.transform.Find("Snow_Cap");
@@ -155,18 +182,18 @@ public class SnowCapTool : EditorWindow
             go.transform.SetParent(car.transform, false);
             cap = go.transform;
             cap.gameObject.AddComponent<MeshFilter>();
-            cap.gameObject.AddComponent<MeshRenderer>().shadowCastingMode =
-                UnityEngine.Rendering.ShadowCastingMode.Off;
+            MeshRenderer r0 = cap.gameObject.AddComponent<MeshRenderer>();
+            r0.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         }
 
-        // La malla esta en el espacio local del cuerpo, asi que copiamos su transform.
+        // La malla esta en el espacio local del cuerpo: copiamos su transform.
         cap.localPosition = body.localPosition;
         cap.localRotation = body.localRotation;
         cap.localScale = body.localScale;
 
         MeshFilter capFilter = cap.GetComponent<MeshFilter>();
         if (capFilter == null) capFilter = cap.gameObject.AddComponent<MeshFilter>();
-        capFilter.sharedMesh = AssetDatabase.LoadAssetAtPath<Mesh>(AssetPath);
+        capFilter.sharedMesh = snow;
 
         MeshRenderer capRenderer = cap.GetComponent<MeshRenderer>();
         if (capRenderer == null) capRenderer = cap.gameObject.AddComponent<MeshRenderer>();
