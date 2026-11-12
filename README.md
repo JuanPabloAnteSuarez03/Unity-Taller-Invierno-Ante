@@ -53,6 +53,20 @@ sigue encendido (humo en el escape), las sirenas giran y la ventisca arrecia sob
       propio modelo, más gruesa en el capó y la parte frontal
 - [x] Nevada ligera y uniforme en toda la escena (partículas lentas, ~100 × 100 m)
 
+## Ajustar la nieve del coche
+
+La capa es una malla generada (`Assets/Models/CarSnow.asset`), no un slider del Inspector.
+Para cambiarla: **Tools → Nieve del coche** y mueve los valores:
+
+| Parámetro | Qué hace |
+|---|---|
+| Espesor base | Nieve sobre todas las superficies horizontales del coche |
+| Extra en el capó / frontal | Espesor añadido hacia el morro |
+| Solo caras con inclinación > | A partir de qué inclinación se acumula (más alto = solo lo plano) |
+| Donde empieza el frontal | Desde qué parte del morro empieza el engrosado |
+
+Pulsa **Regenerar nieve** para reconstruir la malla (también hay un botón para quitarla).
+
 ## Autor
 
 Juan Pablo Ante — Taller de Laboratorio, Desarrollo de Videojuegos.
