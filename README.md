@@ -44,6 +44,8 @@ sigue encendido (humo en el escape), las sirenas giran y la ventisca arrecia sob
 
 - [x] Jerarquía de 10 objetos
 - [x] Iluminación (luna azulada + sirenas roja/azul rotando)
+- [x] Sirenas alineadas con la barra del modelo: cada luz puntual y su bombilla
+      emisiva (`Red_Bulb`, `Blue_Bulb`) en el centro de cada segmento de color
 - [x] `SirenRotation.cs` funcionando en `Siren_Pivot`
 - [x] Partículas: nieve (`Global_Blizzard`) y humo (`Exhaust_Smoke`)
 - [x] Niebla y ambiente nocturno de ventisca
