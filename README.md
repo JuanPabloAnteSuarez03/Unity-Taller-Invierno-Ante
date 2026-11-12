@@ -85,6 +85,21 @@ Pulsa **Regenerar nieve** para reconstruir la malla (también hay un botón para
 
 Incluye presets **ligero** y **denso**, y un botón para recargar los valores de la escena.
 
+## Ajustar el enterramiento y el terreno
+
+**Tools → Terreno y enterramiento**. Regenera la malla del suelo y mueve el coche:
+
+| Parámetro | Qué hace |
+|---|---|
+| Nieve en el morro | Altura de nieve delante del coche (más alto = más hundido de frente) |
+| Nieve en la cola | Altura detrás; si es igual al morro, el enterramiento es uniforme |
+| Altura del coche | Mueve `Car_Mesh` en vertical (`Police_Car` se queda en Y = −0.5) |
+| Ondulación | Cuánto varía el terreno (0 = plano perfecto) |
+| Ventisqueros | Altura de los montículos alejados del coche |
+| Zona limpia | Radio sin ruido alrededor del coche, para que el corte sea limpio |
+
+Presets: **uniforme** y **hundido de morro**. También enlaza con *Nieve del coche*.
+
 ## Autor
 
 Juan Pablo Ante — Taller de Laboratorio, Desarrollo de Videojuegos.
