@@ -49,6 +49,9 @@ sigue encendido (humo en el escape), las sirenas giran y la ventisca arrecia sob
 - [x] Niebla y ambiente nocturno de ventisca
 - [x] Modelo 3D del coche: patrulla low-poly de Kenney (CC0) con material propio
       (`Assets/Models/PoliceCar_Mat.mat`)
+- [x] Nieve acumulada sobre el coche (`Car_Mesh/Snow_Cap`): malla generada a partir del
+      propio modelo, más gruesa en el capó y la parte frontal
+- [x] Nevada ligera y uniforme en toda la escena (partículas lentas, ~100 × 100 m)
 
 ## Autor
 
